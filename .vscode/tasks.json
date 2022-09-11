@@ -1,0 +1,16 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start Dev Server",
+      "command": "deno task start",
+      "type": "shell",
+      "presentation": {
+        "reveal": "silent",
+        "clear": false,
+        "focus": true
+      },
+      "group": "build"
+    }
+  ]
+}
