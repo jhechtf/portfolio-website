@@ -1,5 +1,5 @@
-import BlogPosts from '../islands/BlogPosts.tsx';
-import { Head } from '$fresh/runtime.ts';
+import BlogPosts from "../islands/BlogPosts.tsx";
+import { Head } from "$fresh/runtime.ts";
 
 export default function Blog() {
   return (

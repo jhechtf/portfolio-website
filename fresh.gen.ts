@@ -9,10 +9,9 @@ import * as $2 from "./routes/about.tsx";
 import * as $3 from "./routes/api/joke.ts";
 import * as $4 from "./routes/blog.tsx";
 import * as $5 from "./routes/index.tsx";
+import * as $6 from "./routes/resume.tsx";
 import * as $$0 from "./islands/BlogPosts.tsx";
-import * as $$1 from "./islands/Counter.tsx";
-import * as $$2 from "./islands/RouteSignalUpdater.tsx";
-import * as $$3 from "./islands/routeSignalEffect.hook.ts";
+import * as $$1 from "./islands/DiscordWidget.tsx";
 
 const manifest = {
   routes: {
@@ -22,12 +21,11 @@ const manifest = {
     "./routes/api/joke.ts": $3,
     "./routes/blog.tsx": $4,
     "./routes/index.tsx": $5,
+    "./routes/resume.tsx": $6,
   },
   islands: {
     "./islands/BlogPosts.tsx": $$0,
-    "./islands/Counter.tsx": $$1,
-    "./islands/RouteSignalUpdater.tsx": $$2,
-    "./islands/routeSignalEffect.hook.ts": $$3,
+    "./islands/DiscordWidget.tsx": $$1,
   },
   baseUrl: import.meta.url,
   config,

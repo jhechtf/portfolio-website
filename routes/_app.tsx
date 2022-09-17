@@ -1,24 +1,16 @@
-
-import { AppProps } from '$fresh/server.ts';
-import { Head, asset } from '$fresh/runtime.ts';
-import Navbar from '../components/Navbar/navbar.component.tsx';
-import RouteSignalUpdater from '../islands/RouteSignalUpdater.tsx';
-import useRouteSignal from '../islands/routeSignalEffect.hook.ts';
+import { AppProps } from "$fresh/server.ts";
+import { asset, Head } from "$fresh/runtime.ts";
+import Navbar from "../components/Navbar/navbar.component.tsx";
 
 export default function Layout({
   Component,
 }: AppProps) {
-
-  useRouteSignal();
-
   return (
     <div className="flex flex-col h-full">
-
       <Head>
-        <link rel="stylesheet" href={asset('/base.css')} />
+        <link rel="stylesheet" href={asset("/base.css")} />
       </Head>
 
-      <RouteSignalUpdater />
 
       {/* Global Navbar */}
       <Navbar />
@@ -36,7 +28,6 @@ export default function Layout({
           </div>
         </div>
       </footer>
-
     </div>
-  )
+  );
 }

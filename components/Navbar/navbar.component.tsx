@@ -1,15 +1,11 @@
-import {
+import { } from "$fresh/runtime.ts";
+import { apply, tw } from "twind";
 
-} from '$fresh/runtime.ts';
-import {
-  apply, tw
-} from 'twind';
-
-const wrapper = apply`mx-auto max-w-screen-xl flex`
+const wrapper = apply`mx-auto max-w-screen-xl flex`;
 
 export default function Navbar() {
   return (
-    <nav className='py-4 px-5 border-b'>
+    <nav className="py-4 px-5 border-b dark:border-gray-600 dark:bg-green-900 dark:text-gray-100">
       <div className={tw`${wrapper}`}>
         {/* Brand info */}
         <a href="/" className="font-semibold">
