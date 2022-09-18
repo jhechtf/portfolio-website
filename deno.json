@@ -2,6 +2,11 @@
   "tasks": {
     "start": "deno run -A --watch=static/,routes/ dev.ts"
   },
+  "fmt": {
+    "options": {
+      "singleQuote": true
+    }
+  },
   "importMap": "./import_map.json",
   "compilerOptions": {
     "jsx": "react-jsx",

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useState } from 'preact/hooks';
 
 export interface Channel {
   id: string;
@@ -11,7 +11,7 @@ export interface Member {
   avatar_url: string;
   discriminator: string;
   id: string;
-  status: "online" | "offline";
+  status: 'online' | 'offline';
   username: string;
 }
 
@@ -30,7 +30,7 @@ export default function DiscordWidget() {
 
   useEffect(() => {
     const ac = new AbortController();
-    fetch("https://discord.com/api/guilds/836322962012504145/widget.json", {
+    fetch('https://discord.com/api/guilds/836322962012504145/widget.json', {
       signal: ac.signal,
     })
       .then(async (res) => {
@@ -50,7 +50,7 @@ export default function DiscordWidget() {
 
   return (
     <div>
-      {loading && "Loading..."}
+      {loading && 'Loading...'}
       {!loading && widgetData?.name}
     </div>
   );

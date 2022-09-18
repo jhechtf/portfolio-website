@@ -1,15 +1,15 @@
-import { JSX } from "preact";
-import { tw } from "twind";
-import { signal } from "@preact/signals";
+import { JSX } from 'preact';
+import { tw } from 'twind';
+import { signal } from '@preact/signals';
 
 export interface LinkProps extends JSX.HTMLAttributes<HTMLAnchorElement> {
   activeClass?: string;
 }
 
-export const routeSignal = signal("/");
+export const routeSignal = signal('/');
 
 export default function Link(
-  { href, activeClass = "", children, className, ...rest }: LinkProps,
+  { href, activeClass = '', children, className, ...rest }: LinkProps,
 ) {
   return (
     <a

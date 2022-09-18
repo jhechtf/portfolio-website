@@ -1,8 +1,8 @@
-import { tw } from "twind";
-import { useEffect, useState } from "preact/hooks";
+import { tw } from 'twind';
+import { useEffect, useState } from 'preact/hooks';
 
 export interface BlogPost {
-  type_of: "article";
+  type_of: 'article';
   id: number;
   title: string;
   description: string;
@@ -15,7 +15,7 @@ export default function BlogPosts() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
 
   useEffect(() => {
-    fetch("https://dev.to/api/articles?username=jhechtf")
+    fetch('https://dev.to/api/articles?username=jhechtf')
       .then((res) => {
         if (res.ok) return res.json();
         else throw Error(res.status.toString());
@@ -29,15 +29,16 @@ export default function BlogPosts() {
       {posts.map((post, i) => (
         <div
           key={`blog-post-${post.id}`}
-          className={tw(`font-semibold text-gray-700`, { "my-4": i > 0 })}
+          className={tw(`font-semibold text-gray-700`, { 'my-4': i > 0 })}
         >
           <header>
             <a href={post.url}>
               {post.title}
             </a>
           </header>
-
-          {post.description}
+          <section>
+            {post.description}
+          </section>
         </div>
       ))}
     </div>
