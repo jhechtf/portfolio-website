@@ -1,0 +1,22 @@
+{
+  "commands": [
+    {
+      "type": "url",
+      "url": "/",
+      "title": "Homepage",
+      "description": "Not a housepage, no no, a HOMEpage"
+    },
+    {
+      "type": "url",
+      "url": "/resume",
+      "title": "Resume",
+      "description": "My work history in a boring text document"
+    },
+    {
+      "type": "url",
+      "url": "/blog",
+      "title": "Blog Posts",
+      "description": "Quick aggregation of my blog posts on Dev.To"
+    }
+  ]
+}

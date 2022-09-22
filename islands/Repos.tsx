@@ -3,12 +3,18 @@ import { useEffect, useState } from 'preact/hooks';
 import { Octokit } from 'https://cdn.skypack.dev/@octokit/rest';
 import Placeholder from '../components/Placeholder/placeholder.component.tsx';
 import Badge from '../components/Badge.tsx';
+import Icon from '../components/Icon/icon.component.tsx';
+import Card from '../components/Card/card.component.tsx';
 
 const kit = new Octokit();
 
+const GITLAB_URL =
+  'https://gitlab.com/api/v4/users/jhechtf/projects?order_by=last_activity_at&sort=desc';
+
 export default function Repos() {
   const [isLoading, setLoading] = useState(true);
-  const [value, setValue] = useState([]);
+  const [githubRepos, setGithubRepos] = useState<any[]>([]);
+  const [gitlabRepos, setGitlabRepos] = useState<any[]>([]);
 
   useEffect(() => {
     kit.rest.repos.listForUser({
@@ -16,66 +22,154 @@ export default function Repos() {
       sort: 'pushed',
     })
       .then((res: any) => {
-        setValue(res.data.slice(0, 5));
+        setGithubRepos(res.data.slice(0, 5));
         setLoading(false);
       });
+
+    fetch(GITLAB_URL)
+      .then((res) => {
+        if (res.ok) return res.json();
+        throw new Error(res.statusText);
+      })
+      .then((res) => setGitlabRepos((res as any[]).slice(0, 5)))
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
 
   return (
     <div>
-      <div className='flex gap-4'>
-        {isLoading && (
-          <div className='my-2 w-1/5 border p-4 rounded-lg'>
-            <header className='font-semibold text-gray-700 dark:text-gray-400'>
-              <div className='flex gap-2'>
-                <Placeholder className='bg-black' height='1em' width='150px' />
-                <Placeholder
-                  style={{ display: 'inline-block' }}
-                  height='1em'
-                  width='1em'
-                />
-              </div>
-            </header>
-          </div>
-        )}
-        {value.map((repo: any) => {
-          return (
-            <div className='my-2 flex flex-col flex-grow border dark:border-gray-200 p-4 rounded-lg shadow-lg dark:bg-gray-700 bg-gray-200 text-gray-600'>
-              <header className='font-semibold flex gap-2 dark:text-gray-700 flex-col'>
-                <div className='flex gap-4'>
-                  <div>
-                    {repo.name}
-                  </div>
-                  <Badge>
-                    {repo.open_issues} Issues
-                  </Badge>
+      <div className='grid gap-4 xl:grid-cols-5 lg:grid-cols-3 sm:grid-cols-2 grid-cols-1'>
+        {isLoading &&
+          (
+            <Card
+              header={
+                <div className='flex gap-4 pb-3 items-center'>
+                  <Placeholder
+                    className='bg-black'
+                    height='1.25rem'
+                    width='1.25rem'
+                  />
+                  <Placeholder
+                    className='bg-gray-800'
+                    width={0.75}
+                    height='1em'
+                  />
+                  <Placeholder
+                    className='bg-gray-800'
+                    width={'4em'}
+                    height='1em'
+                  />
                 </div>
-                <section className='text-gray-500'>
-                  {repo.description || 'No description given'}
+              }
+              footer={
+                <section>
+                  <a href='border rounded hover:bg-gray-300 p-2 underline text-blue-500 '>
+                    <Placeholder width='80px' height='1em' />
+                  </a>
                 </section>
-              </header>
-
-              <section className='flex gap-2 mt-2 flex-wrap flex-grow'>
+              }
+            >
+              <Placeholder width={1} height='1em' />
+              <Placeholder
+                className='dark:bg-green-600 bg-green-400 mt-3'
+                width='3em'
+                height='1.25em'
+              />
+            </Card>
+          )}
+        {githubRepos.length > 0 && githubRepos.map((repo: any) => {
+          return (
+            <Card
+              key={`github-repo-${repo.name}`}
+              header={
+                <div className='flex flex-col gap-2 dark:text-gray-700'>
+                  <div className='flex gap-4'>
+                    <div>
+                      <Icon iconName='mdiGithub' size={1.5} />
+                    </div>
+                    <div>
+                      {repo.name}
+                    </div>
+                    <Badge>
+                      {repo.open_issues} Issues
+                    </Badge>
+                  </div>
+                  <div className='text-gray-500'>
+                    {repo.description || 'No description given'}
+                  </div>
+                </div>
+              }
+              footer={
+                <a
+                  href={repo.html_link}
+                  className='border rounded hover:bg-gray-300 p-2 underline text-blue-500 hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-500'
+                >
+                  View Repo
+                </a>
+              }
+            >
+              <section className='flex gap-2 mt-2 flex-wrap'>
                 {repo.topics.map((t: string) => (
                   <div className='py-1 px-2 bg-green-400 rounded-lg text-gray-50'>
-                    <a href={`https://github.com/topics/${t}`} target='_blank'>
+                    <a
+                      href={`https://github.com/topics/${
+                        encodeURIComponent(t)
+                      }`}
+                      target='_blank'
+                    >
                       {t}
                     </a>
                   </div>
                 ))}
               </section>
-
-              <footer className='mt-4 border-t border-gray-400 pt-3'>
+            </Card>
+          );
+        })}
+        {gitlabRepos.length > 0 &&
+          gitlabRepos.map((repo: any) => (
+            <Card
+              key={`gitlab-repo-${repo.id}`}
+              header={
+                <div className='flex flex-col gap-2 dark:text-gray-700'>
+                  <div className='flex gap-4'>
+                    <div>
+                      <Icon iconName='mdiGitlab' size={1.5} />
+                    </div>
+                    <div>
+                      {repo.name}
+                    </div>
+                  </div>
+                  <div className='text-gray-500'>
+                    {repo.description || 'No description given'}
+                  </div>
+                </div>
+              }
+              footer={
                 <a
+                  href={repo.web_url}
+                  target='_blank'
                   className='border rounded hover:bg-gray-300 p-2 underline text-blue-500 hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-500'
-                  href={repo.html_link}
                 >
                   View Repo
                 </a>
-              </footer>
-            </div>
-          );
-        })}
+              }
+            >
+              <section className='flex gap-2 mt-2 flex-wrap'>
+                {repo.topics.map((t: string) => (
+                  <div className='py-1 px-2 bg-green-400 rounded-lg text-gray-50'>
+                    <a
+                      href={`https://gitlab.com/explore/projects/topics/${
+                        encodeURIComponent(t)
+                      }`}
+                      target='_blank'
+                    >
+                      {t}
+                    </a>
+                  </div>
+                ))}
+              </section>
+            </Card>
+          ))}
       </div>
     </div>
   );

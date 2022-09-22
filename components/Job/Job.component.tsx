@@ -22,7 +22,10 @@ export default function Job({
 }: JobProps) {
   return (
     <article
-      className={tw('border rounded-[8px] p-5 dark:bg-gray-300', className)}
+      className={tw(
+        'border rounded-[8px] p-5 dark:bg-gray-300 bg-gray-200 shadow-lg',
+        className,
+      )}
     >
       <header className='font-semibold text-gray-700'>
         <h2 className='text-lg'>

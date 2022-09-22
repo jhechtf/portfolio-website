@@ -1,6 +1,7 @@
 import { AppProps } from '$fresh/server.ts';
 import { asset, Head } from '$fresh/runtime.ts';
 import Navbar from '../components/Navbar/navbar.component.tsx';
+import Command from '../islands/Command.tsx';
 
 export default function Layout({
   Component,
@@ -10,6 +11,7 @@ export default function Layout({
       <Head>
         <link rel='stylesheet' href={asset('/base.css')} />
       </Head>
+      <Command />
 
       {/* Global Navbar */}
       <Navbar />
