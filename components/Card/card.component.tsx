@@ -19,9 +19,11 @@ export default function Card({
             {header}
           </header>
         )}
+
       <section className='flex-grow'>
         {children}
       </section>
+
       {footer &&
         (
           <footer className='mt-4 border-t border-gray-400 pt-3'>

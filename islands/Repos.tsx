@@ -11,27 +11,45 @@ const kit = new Octokit();
 const GITLAB_URL =
   'https://gitlab.com/api/v4/users/jhechtf/projects?order_by=last_activity_at&sort=desc';
 
+export interface BaseRepo {
+  id: number;
+  name: string;
+  description: string;
+  topics: string[];
+}
+
+export interface GithubRepo extends BaseRepo {
+  open_issues: number;
+  html_link: string;
+}
+
+export interface GitlabRepo extends BaseRepo {
+  web_url: string;
+}
+
 export default function Repos() {
   const [isLoading, setLoading] = useState(true);
-  const [githubRepos, setGithubRepos] = useState<any[]>([]);
-  const [gitlabRepos, setGitlabRepos] = useState<any[]>([]);
+  const [githubRepos, setGithubRepos] = useState<GithubRepo[]>([]);
+  const [gitlabRepos, setGitlabRepos] = useState<GitlabRepo[]>([]);
 
   useEffect(() => {
-    kit.rest.repos.listForUser({
+    // deno-lint-ignore no-explicit-any
+    (kit as any).rest.repos.listForUser({
       username: 'jhechtf',
       sort: 'pushed',
     })
-      .then((res: any) => {
+      .then((res: { data: GithubRepo[] }) => {
         setGithubRepos(res.data.slice(0, 5));
-        setLoading(false);
-      });
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
 
     fetch(GITLAB_URL)
       .then((res) => {
         if (res.ok) return res.json();
         throw new Error(res.statusText);
       })
-      .then((res) => setGitlabRepos((res as any[]).slice(0, 5)))
+      .then((res) => setGitlabRepos((res as GitlabRepo[]).slice(0, 5)))
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
@@ -77,7 +95,7 @@ export default function Repos() {
               />
             </Card>
           )}
-        {githubRepos.length > 0 && githubRepos.map((repo: any) => {
+        {githubRepos.length > 0 && githubRepos.map((repo) => {
           return (
             <Card
               key={`github-repo-${repo.name}`}
@@ -112,9 +130,8 @@ export default function Repos() {
                 {repo.topics.map((t: string) => (
                   <div className='py-1 px-2 bg-green-400 rounded-lg text-gray-50'>
                     <a
-                      href={`https://github.com/topics/${
-                        encodeURIComponent(t)
-                      }`}
+                      href={`https://github.com/topics/${encodeURIComponent(t)
+                        }`}
                       target='_blank'
                     >
                       {t}
@@ -126,7 +143,7 @@ export default function Repos() {
           );
         })}
         {gitlabRepos.length > 0 &&
-          gitlabRepos.map((repo: any) => (
+          gitlabRepos.map((repo) => (
             <Card
               key={`gitlab-repo-${repo.id}`}
               header={
@@ -158,9 +175,8 @@ export default function Repos() {
                 {repo.topics.map((t: string) => (
                   <div className='py-1 px-2 bg-green-400 rounded-lg text-gray-50'>
                     <a
-                      href={`https://gitlab.com/explore/projects/topics/${
-                        encodeURIComponent(t)
-                      }`}
+                      href={`https://gitlab.com/explore/projects/topics/${encodeURIComponent(t)
+                        }`}
                       target='_blank'
                     >
                       {t}
