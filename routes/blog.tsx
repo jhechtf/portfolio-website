@@ -1,5 +1,6 @@
 import BlogPosts from '../islands/BlogPosts.tsx';
 import { Head } from '$fresh/runtime.ts';
+import Header from '../components/Header/header.component.tsx';
 
 export default function Blog() {
   return (
@@ -7,7 +8,7 @@ export default function Blog() {
       <Head>
         <title>Jim Burbridge &ndash; Blog</title>
       </Head>
-      <h1 className='text-2xl font-bold font-sans mb-8'>Recent Articles</h1>
+      <Header className="mb-4" level={1}>Recent Articles</Header>
       <BlogPosts />
     </div>
   );
